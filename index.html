@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Norteverso DRNG</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <header class="top">
+      <div>
+        <h1>Norteverso Data RNG</h1>
+        <p class="muted">
+          Cálculo interno por temporadas <strong>YYYY–YYYY</strong> (ex:
+          2020–2021) → export agregado no JSON (ex: 2020–2024).
+        </p>
+      </div>
+      <div class="chip">
+        Regra transferência: <strong>40/60</strong> (padrão)
+      </div>
+    </header>
+
+    <main class="grid">
+      <!-- DNA -->
+      <section class="card">
+        <h2>1) DNA do jogador</h2>
+
+        <div class="row">
+          <label>Nome (opcional)</label>
+          <input id="nome" placeholder="Ex: Kristian Järvinen" />
+        </div>
+
+        <div class="row">
+          <label>Posição</label>
+          <select id="posicao">
+            <option value="CA">Centroavante (ST)</option>
+            <option value="SS">Segundo atacante (CF)</option>
+            <option value="PE">Ponta esquerda (LW)</option>
+            <option value="PD">Ponta direita (RW)</option>
+            <option value="MEI">Meia atacante (CAM)</option>
+            <option value="MC">
+              Meia/Meia direita/Meia esquerda (CM/RM/LM)
+            </option>
+            <option value="VOL">Volante (CDM)</option>
+            <option value="LE">Lateral esquerdo (LE)</option>
+            <option value="LD">Lateral direito (RB)</option>
+            <option value="ZAG">Zagueiro (CB)</option>
+            <option value="GK">Goleiro (GK)</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <label>Nível real (1–7)</label>
+          <select id="nivel">
+            <option value="1">1 — muito fraco</option>
+            <option value="2" selected>2 — fraco</option>
+            <option value="3">3 — comum</option>
+            <option value="4">4 — bom</option>
+            <option value="5">5 — excelente</option>
+            <option value="6">6 — craque</option>
+            <option value="7">7 — gênio</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <label>Perfil de gols</label>
+          <select id="perfilGols">
+            <option value="nao">Não</option>
+            <option value="sim" selected>Sim</option>
+            <option value="extra">Sim (extraordinário)</option>
+          </select>
+          <p class="hint">
+            Ajusta a taxa base de gols para atacantes/pontas/meias.
+          </p>
+        </div>
+
+        <div class="row">
+          <label>Físico</label>
+          <select id="fisico">
+            <option value="fragil">Frágil</option>
+            <option value="normal" selected>Normal</option>
+            <option value="tanque">Tanque</option>
+          </select>
+        </div>
+
+        <div class="row2">
+          <div>
+            <label>Temporada início</label>
+            <input
+              id="inicio"
+              type="number"
+              min="1950"
+              max="2025"
+              value="2015"
+            />
+          </div>
+          <div>
+            <label>Temporada fim</label>
+            <input id="fim" type="number" min="1950" max="2025" value="2025" />
+            <p class="hint">
+              “Fim” é o ano inicial da última temporada (ex: 2025 = 2025–2026).
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <label
+            ><input id="ativo" type="checkbox" checked /> Ativo (exporta
+            “ano–”)</label
+          >
+        </div>
+      </section>
+
+      <!-- Clubes -->
+      <section class="card">
+        <div class="split">
+          <h2>2) Passagens por clubes</h2>
+          <button id="addClube" class="btn">+ Adicionar passagem</button>
+        </div>
+
+        <div class="muted small">
+          Dica: marque <strong>Dono do contrato</strong> para o clube principal
+          do período. Empréstimos não quebram a passagem do dono no export.
+        </div>
+
+        <div id="clubesList" class="list"></div>
+      </section>
+
+      <!-- Seleção -->
+      <section class="card">
+        <h2>3) Seleção</h2>
+
+        <div class="subcard">
+          <div class="split">
+            <h3>Seleção de base</h3>
+            <label class="muted"
+              ><input id="baseSim" type="checkbox" /> Fez base</label
+            >
+          </div>
+
+          <div class="grid2">
+            <div class="row">
+              <label>Seleção (base)</label>
+              <input id="baseNome" placeholder="Ex: Finlândia (base)" />
+            </div>
+            <div class="row2">
+              <div>
+                <label>Início (ano)</label>
+                <input
+                  id="baseIni"
+                  type="number"
+                  min="1950"
+                  max="2025"
+                  value="2012"
+                />
+              </div>
+              <div>
+                <label>Fim (ano)</label>
+                <input
+                  id="baseFim"
+                  type="number"
+                  min="1950"
+                  max="2025"
+                  value="2014"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <label>Papel</label>
+              <select id="basePapel">
+                <option value="reserva">Reserva</option>
+                <option value="reserva_imp">Reserva importante</option>
+                <option value="titular" selected>Titular</option>
+                <option value="tanque">Tanque</option>
+              </select>
+            </div>
+            <div class="row">
+              <label>Perfil na base</label>
+              <select id="basePerfil">
+                <option value="medio">Médio</option>
+                <option value="regular" selected>Regular</option>
+                <option value="excelente">Excelente</option>
+                <option value="craque">Craque</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="subcard">
+          <div class="split">
+            <h3>Seleção principal</h3>
+            <label class="muted"
+              ><input id="selSim" type="checkbox" checked /> Convocado</label
+            >
+          </div>
+
+          <div class="grid2">
+            <div class="row">
+              <label>Seleção</label>
+              <input
+                id="selNome"
+                placeholder="Ex: Finlândia"
+                value="Finlândia"
+              />
+            </div>
+
+            <div class="row2">
+              <div>
+                <label>Início (ano)</label>
+                <input
+                  id="selIni"
+                  type="number"
+                  min="1950"
+                  max="2025"
+                  value="2019"
+                />
+              </div>
+              <div>
+                <label>Fim (ano)</label>
+                <input
+                  id="selFim"
+                  type="number"
+                  min="1950"
+                  max="2025"
+                  value="2025"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <label>Papel</label>
+              <select id="selPapel">
+                <option value="lesionado">Lesionado/quase não convocado</option>
+                <option value="reserva">Reserva</option>
+                <option value="reserva_imp" selected>Reserva importante</option>
+                <option value="titular">Titular absoluto</option>
+                <option value="tanque">Tanque</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <label>Perfil na seleção</label>
+              <select id="selPerfil">
+                <option value="pessimo">Péssimo em seleção</option>
+                <option value="clube" selected>Jogador de clube</option>
+                <option value="regular">Regular</option>
+                <option value="selecao">Jogador de seleção</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Temporadas -->
+      <section class="card">
+        <div class="split">
+          <h2>4) Temporadas (interno)</h2>
+          <div class="split">
+            <button id="gerarTemp" class="btn">Gerar temporadas</button>
+            <button id="gerarJson" class="btn primary">Gerar JSON</button>
+          </div>
+        </div>
+
+        <div class="muted small">
+          Você pode editar temporadas-chave. Se houver 2 clubes na mesma
+          temporada, escolha o preset (padrão 40/60).
+        </div>
+
+        <div id="temporadasList" class="list"></div>
+      </section>
+
+      <!-- Output -->
+      <section class="card">
+        <div class="split">
+          <h2>Saída (JSON)</h2>
+          <button id="copiar" class="btn">Copiar</button>
+        </div>
+        <textarea
+          id="out"
+          spellcheck="false"
+          placeholder="Clique em 'Gerar JSON'"
+        ></textarea>
+      </section>
+    </main>
+
+    <footer class="foot muted">
+      Norteverso Data Random Number Generator • Beta v0.1
+    </footer>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
