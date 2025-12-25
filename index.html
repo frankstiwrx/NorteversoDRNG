@@ -5,17 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Norteverso DRNG</title>
     <link rel="stylesheet" href="./style.css" />
+    <!-- Favicon -->
+    <link rel="icon" href="icon/favicon.ico" />
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="icon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="icon/favicon-16x16.png"
+    />
+
+    <!-- Apple / Mobile -->
+    <link rel="apple-touch-icon" href="icon/apple-touch-icon.png" />
+
+    <!-- Android / PWA -->
+    <link rel="manifest" href="icon/site.webmanifest" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="icon/android-chrome-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="icon/android-chrome-512x512.png"
+    />
   </head>
 
   <body>
     <header class="top">
-      <div>
-        <h1>Norteverso Data RNG</h1>
-        <p class="muted">
-          Cálculo interno por temporadas <strong>YYYY–YYYY</strong> (ex:
-          2020–2021) → export agregado no JSON (ex: 2020–2024).
-        </p>
+      <div class="title-wrap">
+        <img src="icon/gerbito.png" alt="Gerbito" class="logo-gerbito" />
+
+        <div>
+          <h1>Norteverso Data Generator</h1>
+          <p class="muted">
+            Geração e agregação inteligente de dados de jogadores por
+            temporadas.
+          </p>
+        </div>
       </div>
+
       <div class="chip">
         Regra transferência: <strong>40/60</strong> (padrão)
       </div>
